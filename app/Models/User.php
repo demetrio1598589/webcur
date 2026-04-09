@@ -34,11 +34,6 @@ class User extends Authenticatable
      */
     public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'nombre',
         'apellido',
@@ -46,9 +41,32 @@ class User extends Authenticatable
         'dni',
         'password',
         'telefono',
-        'id_rol',
         'estado',
     ];
+
+    /**
+     * Get the roles that belong to the user.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'usuario_roles', 'id_usuario', 'id_rol');
+    }
+
+    /**
+     * Check if the user has a specific role.
+     *
+     * @param string $roleName
+     * @return bool
+     */
+    public function hasRole($roleName)
+    {
+        return $this->roles->contains('nombre', $roleName);
+    }
+
+    public function hasAnyRole(array $roleNames)
+    {
+        return $this->roles()->whereIn('nombre', $roleNames)->exists();
+    }
 
     /**
      * The attributes that should be hidden for serialization.

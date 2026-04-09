@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS cursos_online;
 CREATE DATABASE cursos_online;
 USE cursos_online;
 
@@ -12,7 +13,9 @@ CREATE TABLE roles (
 );
 INSERT INTO roles (nombre, descripcion) VALUES
 ('admin', 'Administrador del sistema'),
+('gerencia', 'Administrador de la plataforma'),
 ('instructor', 'Creador de cursos'),
+('colaborador', 'Creador de noticias y eventos'),
 ('estudiante', 'Usuario que consume cursos');
 
 CREATE TABLE usuarios (
@@ -24,16 +27,30 @@ CREATE TABLE usuarios (
     password VARCHAR(255),
     telefono VARCHAR(20),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    estado ENUM('activo','inactivo') DEFAULT 'activo',
-    id_rol INT,
-    FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
+    estado ENUM('activo','inactivo') DEFAULT 'activo'
 );
-INSERT INTO usuarios (nombre, apellido, email, dni, password, telefono, id_rol) VALUES
+
+CREATE TABLE usuario_roles (
+    id_usuario INT,
+    id_rol INT,
+    PRIMARY KEY (id_usuario, id_rol),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_rol) REFERENCES roles(id_rol) ON DELETE CASCADE
+);
+INSERT INTO usuarios (id_usuario, nombre, apellido, email, dni, password, telefono) VALUES
 /* password general -- 123 -- */
-('Juan', 'Perez', 'juan@gmail.com', '0000', '$2y$10$QD1TgBoGhFTUdWdST.seHu5a24mmpaDFFeBRxstprU5KK9l/Mhn8q', '999111222', 1),
-('Maria', 'Lopez', 'maria@gmail.com', '11', '$2y$10$QD1TgBoGhFTUdWdST.seHu5a24mmpaDFFeBRxstprU5KK9l/Mhn8q', '999333444', 2),
-('Carlos', 'Ramirez', 'carlos@gmail.com', '12', '$2y$10$QD1TgBoGhFTUdWdST.seHu5a24mmpaDFFeBRxstprU5KK9l/Mhn8q', '999555666', 3),
-('Ana', 'Torres', 'ana@gmail.com', '13', '$2y$10$QD1TgBoGhFTUdWdST.seHu5a24mmpaDFFeBRxstprU5KK9l/Mhn8q', '999777888', 3);
+(1, 'Admin', 'General', 'admin@gmail.com', '0000', '$2y$10$QD1TgBoGhFTUdWdST.seHu5a24mmpaDFFeBRxstprU5KK9l/Mhn8q', '999111222'),
+(2, 'Juan', 'Perez', 'juan@gmail.com', '10', '$2y$10$QD1TgBoGhFTUdWdST.seHu5a24mmpaDFFeBRxstprU5KK9l/Mhn8q', '999111222'),
+(3, 'Maria', 'Lopez', 'maria@gmail.com', '11', '$2y$10$QD1TgBoGhFTUdWdST.seHu5a24mmpaDFFeBRxstprU5KK9l/Mhn8q', '999333444'),
+(4, 'Carlos', 'Ramirez', 'carlos@gmail.com', '12', '$2y$10$QD1TgBoGhFTUdWdST.seHu5a24mmpaDFFeBRxstprU5KK9l/Mhn8q', '999555666'),
+(5, 'Ana', 'Torres', 'ana@gmail.com', '13', '$2y$10$QD1TgBoGhFTUdWdST.seHu5a24mmpaDFFeBRxstprU5KK9l/Mhn8q', '999777888');
+
+INSERT INTO usuario_roles (id_usuario, id_rol) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
 
 -- =========================
 -- 📚 CURSOS Y MÓDULOS
@@ -85,6 +102,54 @@ INSERT INTO contenidos (tipo, url, titulo, id_modulo) VALUES
 ('pdf', 'docs/html.pdf', 'Guía HTML', 3),
 ('video', 'videos/js.mp4', 'Clase JS', 4),
 ('pdf', 'docs/sql.pdf', 'Guía SQL', 5);
+
+-- =========================
+-- 📝 EXÁMENES Y NOTAS
+-- =========================
+
+CREATE TABLE examenes (
+    id_examen INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(200),
+    descripcion TEXT,
+    id_modulo INT,
+    FOREIGN KEY (id_modulo) REFERENCES modulos(id_modulo) ON DELETE CASCADE
+);
+INSERT INTO examenes (titulo, descripcion, id_modulo) VALUES
+('Examen de Python', 'Evalúa conceptos básicos de Python', 1);
+
+CREATE TABLE preguntas (
+    id_pregunta INT AUTO_INCREMENT PRIMARY KEY,
+    texto_pregunta TEXT,
+    puntos INT DEFAULT 1,
+    id_examen INT,
+    FOREIGN KEY (id_examen) REFERENCES examenes(id_examen) ON DELETE CASCADE
+);
+INSERT INTO preguntas (texto_pregunta, puntos, id_examen) VALUES
+('¿Qué función se usa para imprimir en consola en Python?', 10, 1),
+('¿Python es compilado o interpretado?', 10, 1);
+
+CREATE TABLE opciones (
+    id_opcion INT AUTO_INCREMENT PRIMARY KEY,
+    texto_opcion TEXT,
+    es_correcta BOOLEAN DEFAULT FALSE,
+    id_pregunta INT,
+    FOREIGN KEY (id_pregunta) REFERENCES preguntas(id_pregunta) ON DELETE CASCADE
+);
+INSERT INTO opciones (texto_opcion, es_correcta, id_pregunta) VALUES
+('print()', TRUE, 1), ('echo()', FALSE, 1),
+('Interpretado', TRUE, 2), ('Compilado', FALSE, 2);
+
+CREATE TABLE notas (
+    id_nota INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    id_examen INT,
+    puntaje_obtenido INT,
+    fecha_examen TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_examen) REFERENCES examenes(id_examen) ON DELETE CASCADE
+);
+INSERT INTO notas (id_usuario, id_examen, puntaje_obtenido) VALUES
+(3, 1, 20);
 
 -- =========================
 -- 💰 PRECIOS Y PLANES
