@@ -28,17 +28,21 @@
         </div>
     </a>
 
-    <!-- Evaluaciones -->
-    <a href="{{ route('instructor.evaluaciones') }}" class="glass rounded-xl overflow-hidden hover:-translate-y-1 transition-transform border border-white/5 hover:border-cta group flex flex-col">
+    <!-- Diplomados (Reemplaza Banco de Evaluaciones) -->
+    <a href="{{ route('instructor.diplomados') }}" class="glass rounded-xl overflow-hidden hover:-translate-y-1 transition-transform border border-white/5 hover:border-cta group flex flex-col">
         <div class="h-24 bg-cta/10 relative overflow-hidden flex items-center justify-center">
-            <svg class="w-10 h-10 text-cta/30 absolute -left-2 top-2 -rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <svg class="w-10 h-10 text-cta/30 absolute -left-2 top-2 -rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+            </svg>
             <div class="w-12 h-12 bg-cta/20 text-cta rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                </svg>
             </div>
         </div>
         <div class="p-5 flex-1">
-            <h3 class="text-lg font-heading font-medium mb-1">Banco de Evaluaciones</h3>
-            <p class="text-xs text-gray-400 line-clamp-2">Genera cuestionarios para cada módulo con opciones múltiples.</p>
+            <h3 class="text-lg font-heading font-medium mb-1">Gestión de Diplomados</h3>
+            <p class="text-xs text-gray-400 line-clamp-2">Agrupa tus cursos en programas de especialización y diplomados premium.</p>
         </div>
     </a>
 

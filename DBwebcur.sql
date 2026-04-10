@@ -195,9 +195,11 @@ CREATE TABLE detalle_pagos (
     id_pago INT,
     id_curso INT,
     id_modulo INT,
+    id_diplomado INT,
     FOREIGN KEY (id_pago) REFERENCES pagos(id_pago),
     FOREIGN KEY (id_curso) REFERENCES cursos(id_curso),
-    FOREIGN KEY (id_modulo) REFERENCES modulos(id_modulo)
+    FOREIGN KEY (id_modulo) REFERENCES modulos(id_modulo),
+    FOREIGN KEY (id_diplomado) REFERENCES diplomados(id_diplomado)
 );
 INSERT INTO detalle_pagos (id_pago, id_curso) VALUES
 (1, 1),
@@ -361,10 +363,12 @@ CREATE TABLE inscripciones (
     id_inscripcion INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT,
     id_curso INT,
+    id_diplomado INT,
     fecha_inscripcion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     estado ENUM('activo','finalizado'),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-    FOREIGN KEY (id_curso) REFERENCES cursos(id_curso)
+    FOREIGN KEY (id_curso) REFERENCES cursos(id_curso),
+    FOREIGN KEY (id_diplomado) REFERENCES diplomados(id_diplomado)
 );
 INSERT INTO inscripciones (id_usuario, id_curso, estado) VALUES
 (3, 1, 'activo'),
